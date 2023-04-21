@@ -1,6 +1,5 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 
-import { User as FirebaseUser } from "firebase/auth";
 import {
   Authenticator,
   buildCollection,
@@ -14,41 +13,18 @@ import "@fontsource/ibm-plex-mono";
 
 // TODO: Replace with your config
 const firebaseConfig = {
-  apiKey: "AIzaSyB-v8p1o8QRQKaq7px8yZ1gCbzuEqGkydU",
-  authDomain: "tables-artform.firebaseapp.com",
-  projectId: "tables-artform",
-  storageBucket: "tables-artform.appspot.com",
-  messagingSenderId: "544155643743",
-  appId: "1:544155643743:web:a49de31da014d4d92f50ea",
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
 };
 
 const locales = {
   "en-US": "English (United States)",
   "es-ES": "Spanish (Spain)",
   "de-DE": "German",
-};
-
-type Product = {
-  name: string;
-  price: number;
-  status: string;
-  published: boolean;
-  related_products: EntityReference[];
-  main_image: string;
-  tags: string[];
-  description: string;
-  categories: string[];
-  publisher: {
-    name: string;
-    external_id: string;
-  };
-  expires_on: Date;
-};
-
-type Dataset = {
-  title: string;
-  description: string;
-  file_upload: string;
 };
 
 const localeCollection = buildCollection({
@@ -79,7 +55,7 @@ const localeCollection = buildCollection({
   },
 });
 
-const productsCollection = buildCollection<Product>({
+const productsCollection = buildCollection({
   name: "Products",
   singularName: "Product",
   path: "products",
@@ -204,8 +180,7 @@ const productsCollection = buildCollection<Product>({
     },
   },
 });
-
-const datasetsCollection = buildCollection<Dataset>({
+const datasetsCollection = buildCollection({
   name: "Datasets",
   singularName: "Dataset",
   path: "datasets",
@@ -215,24 +190,28 @@ const datasetsCollection = buildCollection<Dataset>({
     // we have created the roles object in the navigation builder
     delete: false,
   }),
+
   properties: {
     title: {
       name: "Title",
       validation: { required: true },
       dataType: "string",
     },
+
     description: {
       name: "Description",
       description: "Not mandatory but it'd be awesome if you filled this up",
       dataType: "string",
       columnWidth: 300,
     },
+
     file_upload: buildProperty({
+      // The `buildProperty` method is a utility function used for type checking
       name: "File Upload",
       dataType: "string",
-      description: "you can upload csv,sql,xls or json file.",
+      description: "you can upload csv,json,sql or xls file",
       storage: {
-        storagePath: "datasets",
+        storagePath: "images",
         acceptedFiles: [
           "text/*",
           "application/json",
@@ -244,22 +223,19 @@ const datasetsCollection = buildCollection<Dataset>({
 });
 
 export default function App() {
-  const myAuthenticator: Authenticator<FirebaseUser> = useCallback(
-    async ({ user, authController }) => {
-      if (user?.email?.includes("flanders")) {
-        throw Error("Stupid Flanders!");
-      }
+  const myAuthenticator = useCallback(async ({ user, authController }) => {
+    if (user?.email?.includes("flanders")) {
+      throw Error("Stupid Flanders!");
+    }
 
-      console.log("Allowing access to", user?.email);
-      // This is an example of retrieving async data related to the user
-      // and storing it in the user extra field.
-      const sampleUserRoles = await Promise.resolve(["admin"]);
-      authController.setExtra(sampleUserRoles);
+    console.log("Allowing access to", user?.email);
+    // This is an example of retrieving async data related to the user
+    // and storing it in the user extra field.
+    const sampleUserRoles = await Promise.resolve(["admin"]);
+    authController.setExtra(sampleUserRoles);
 
-      return true;
-    },
-    []
-  );
+    return true;
+  }, []);
 
   return (
     <FirebaseCMSApp
