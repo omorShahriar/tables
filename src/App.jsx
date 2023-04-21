@@ -1,24 +1,18 @@
 import React, { useCallback } from "react";
 
-import {
-  Authenticator,
-  buildCollection,
-  buildProperty,
-  EntityReference,
-  FirebaseCMSApp,
-} from "firecms";
+import { buildCollection, buildProperty, FirebaseCMSApp } from "firecms";
 
 import "typeface-rubik";
 import "@fontsource/ibm-plex-mono";
 
 // TODO: Replace with your config
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "",
-  projectId: "",
-  storageBucket: "",
-  messagingSenderId: "",
-  appId: "",
+  apiKey: "AIzaSyB-v8p1o8QRQKaq7px8yZ1gCbzuEqGkydU",
+  authDomain: "tables-artform.firebaseapp.com",
+  projectId: "tables-artform",
+  storageBucket: "tables-artform.appspot.com",
+  messagingSenderId: "544155643743",
+  appId: "1:544155643743:web:a49de31da014d4d92f50ea",
 };
 
 const locales = {
