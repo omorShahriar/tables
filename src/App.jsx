@@ -205,7 +205,8 @@ const datasetsCollection = buildCollection({
       dataType: "string",
       description: "you can upload csv,json,sql or xls file",
       storage: {
-        storagePath: "images",
+        storagePath: "datasets",
+        storeUrl: true,
         acceptedFiles: [
           "text/*",
           "application/json",
